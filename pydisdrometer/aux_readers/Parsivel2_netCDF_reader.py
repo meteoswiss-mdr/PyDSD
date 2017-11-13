@@ -56,8 +56,8 @@ class Parsivel2_netCDF(object):
         time = np.ma.array(self.nc_dataset.variables['Time'][:])
         self.time = self._get_epoch_time(time)
 
-        Nd = np.power(np.ma.array(
-                self.nc_dataset.variables['VolumetricDrops'][:]),10)
+        Nd = np.power(10,np.ma.array(
+                self.nc_dataset.variables['VolumetricDrops'][:]))
         velocity = np.ma.array(
              [0.05, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95, 1.1, 1.3, 1.5, 1.7, 1.9,
              2.2, 2.6, 3.0, 3.4, 3.8, 4.4, 5.2, 6.0, 6.8, 7.6, 8.8, 10.4, 12.0, 13.6, 15.2,
