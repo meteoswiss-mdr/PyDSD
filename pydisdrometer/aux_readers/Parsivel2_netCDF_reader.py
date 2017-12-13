@@ -63,7 +63,7 @@ class Parsivel2_netCDF(object):
              		     17.6 , 20.8])
         rain_rate = ma.array(
                 self.nc_dataset.variables['ParsivelIntensity'][:])
-	Zh = ma.array(
+        Zh = ma.array(
                 self.nc_dataset.variables['Reflectivity'][:])
 
         diameter = np.array([  0.0625 ,   0.1875 ,   0.3125 ,   0.4375 ,   0.5625 ,   0.6875 ,   0.8125 ,   0.9375 ,   1.0625 ,
@@ -71,7 +71,7 @@ class Parsivel2_netCDF(object):
                                4.25   ,   4.75   ,   5.5    ,   6.5    ,   7.5    ,   8.5    ,    9.5   ,  11.     ,  13.     ,
                               15.     ,  17.     ,  19.     ,   21.5   ,  24.5    ])
 
-	spread = np.array([ 0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.250 ,
+        spread = np.array([ 0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.125 ,  0.250 ,
                             0.250 ,  0.250 ,  0.250 ,  0.250 ,  0.500 ,  0.500 ,  0.500 ,  0.500 ,  0.500 ,  1.000 ,  1.000 ,
                             1.000 ,  1.000 ,  1.000 ,  2.000 ,  2.000 ,  2.000 ,  2.000 ,  2.000 ,  3.000 ,  3.000 ])
 
@@ -95,7 +95,7 @@ class Parsivel2_netCDF(object):
         self.fields['rain_rate'] = common.var_to_dict(
                 'rain_rate', rain_rate, 'mm h^-1',
                 'Rain rate')
-	self.fields['Zh'] = common.var_to_dict(
+        self.fields['Zh'] = common.var_to_dict(
                 'Zh', Zh, 'dBZ',
                 'Reflectivity')
 
