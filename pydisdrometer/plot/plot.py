@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from pylab import cm
 from matplotlib.dates import DateFormatter
-import matplotlib.dates as mdates
 from matplotlib.dates import SecondLocator, MinuteLocator, HourLocator, DayLocator
 
 
@@ -79,7 +78,8 @@ def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
             np.argmax(np.nansum(dsd.fields['Nd']['data'], axis=0)[::-1] > 0)]
         plt.ylim(0, max_diameter)
 
-    plt.colorbar()
+    clb = plt.colorbar()
+    clb.set_label('Number of Drops')
     plt.xlabel('Time(m)')
     plt.ylabel('Diameter(mm)')
     return fig, ax
@@ -317,7 +317,7 @@ def plot_ts(dsd, varname, date_format='%H:%M', tz=None,
 
     x_fmt = DateFormatter(date_format, tz=tz)
 
-    ax.plot_date(mdates.epoch2num(dsd.time['data']), dsd.fields[varname]['data'], **kwargs)
+    ax.plot_date(dsd.time['data'], dsd.fields[varname]['data'], **kwargs)
 
     ax.xaxis.set_major_formatter(x_fmt)
     if x_min_tick_format == 'second':

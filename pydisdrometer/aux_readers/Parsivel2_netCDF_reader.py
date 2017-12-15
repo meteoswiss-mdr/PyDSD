@@ -54,15 +54,18 @@ class Parsivel2_netCDF(object):
         self.filename = filename
 
         time = ma.array(self.nc_dataset.variables['Time'][:])
-        self.time = self._get_epoch_time(time)
+        self.time = self.get_datetime_from_epoch(time)
 
         Nd = np.power(10,ma.transpose(ma.array(
                 self.nc_dataset.variables['VolumetricDrops'][:])))
+
         velocity = ma.array([ 0.05,  0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95, 1.1, 1.3 , 1.5 , 1.7 , 1.9 ,
              		      2.2 ,  2.6 , 3.0 , 3.4 , 3.8 , 4.4 , 5.2 , 6.0 , 6.8 , 7.6 , 8.8, 10.4, 12.0, 13.6, 15.2,
              		     17.6 , 20.8])
+
         rain_rate = ma.array(
                 self.nc_dataset.variables['ParsivelIntensity'][:])
+
         Zh = ma.array(
                 self.nc_dataset.variables['Reflectivity'][:])
 
@@ -122,8 +125,9 @@ class Parsivel2_netCDF(object):
         for key in self.nc_dataset.ncattrs():
             self.info[key] =self.nc_dataset.getncattr(key)
 
-    def _get_epoch_time(self, sample_times):
-        """Convert time to epoch time and return a dictionary."""
-        eptime = {'data': sample_times, 'units': common.EPOCH_UNITS,
-                  'standard_name': 'Time', 'long_name': 'Time (UTC)'}
-        return eptime
+    def get_datetime_from_epoch(self, sample_times):
+        """Convert time from epoch time to datetime and return a dictionary."""
+        base = datetime.datetime.fromtimestamp(sample_times[0])
+        arr = np.array([base + datetime.timedelta(seconds=30*i) for i in range(2880)])
+        datetim = {'data': arr, 'units': 'datetime object', 'standard_name': 'Time', 'long_name': 'Time (UTC)'}
+        return datetim
