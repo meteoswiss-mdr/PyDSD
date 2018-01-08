@@ -69,8 +69,8 @@ class Parsivel2_netCDF(object):
         ma.set_fill_value(self.fields['rain_rate']['data'],self.fields['rain_rate']['_FillValue'])
         del self.fields['rain_rate']['_FillValue']
 
-        self.fields['reflectivity']  = common.ncvar_to_dict(self.nc_dataset.variables['Reflectivity'])
-        del self.fields['reflectivity']['_FillValue']
+        self.fields['Zh']  = common.ncvar_to_dict(self.nc_dataset.variables['Reflectivity'])
+        del self.fields['Zh']['_FillValue']
 
         self.fields['num_particles']  = common.ncvar_to_dict(self.nc_dataset.variables['RawDrops'])
         self.fields['num_particles']['data'] = ma.masked_array(self.fields['num_particles']['data'])

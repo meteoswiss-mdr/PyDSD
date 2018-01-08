@@ -93,7 +93,7 @@ class DropSizeDistribution(object):
         except:
             self.velocity = None
         try:
-            self.Z = reader.fields['reflectivity']
+            self.Z = reader.fields['Zh']
         except:
             self.Z = None
         try:
