@@ -352,19 +352,22 @@ class DropSizeDistribution(object):
         run = (0.5 * cum_W[-1] - cum_W[cross_pt]) / slope
         return self.diameter['data'][cross_pt] + run
 
-    def calculate_RR(self):
+    def calculate_RR(self,cut):
         '''Calculate instantaneous rain rate.
 
         This calculates instantaneous rain rate based on the flux of water.
         '''
+        idx = self._find_nearest(self.diameter['data'],cut)
         self.fields['rain_rate'] = {'data': np.ma.zeros(self.numt)}
         for t in range(0, self.numt):
             # self.rain_rate['data'][t] = 0.6*3.1415 * 10**(-3) * np.dot(np.multiply(self.rain_rate['data'],np.multiply(self.Nd['data'][t],self.spread['data'] )),
             #    np.array(self.diameter['data'])**3)
             velocity = 9.65 - 10.3 * np.exp(-0.6 * self.diameter['data'])
             velocity[0] = 0.5
+            d3 = np.zeros(len(self.diameter['data']))
+            d3[0:idx] = np.array(self.diameter['data'][0:idx] ** 3) 
             self.fields['rain_rate']['data'][t] = 0.6 * np.pi * 1e-03 * np.sum(self._mmultiply(
-                velocity, self.Nd['data'][t], self.spread['data'], np.array(self.diameter['data']) ** 3))
+                velocity, self.Nd['data'][t], self.spread['data'], d3))
 
     def calculate_R_Kdp_relationship(self):
         '''
@@ -528,4 +531,6 @@ class DropSizeDistribution(object):
         gdsd  = pytmatrix.psd.GammaPSD(self.fields['D0']['data'][idx], self.fields['Nw']['data'][idx],mu)
         return np.sqrt(np.nansum(np.power(np.abs(self.Nd['data'][idx] - gdsd(self.diameter['data'])),2)))
 
-
+    def _find_nearest(self,array,value):
+    	idx = (np.abs(array-value)).argmin()
+    	return idx
