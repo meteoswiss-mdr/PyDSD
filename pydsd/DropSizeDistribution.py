@@ -83,6 +83,7 @@ class DropSizeDistribution(object):
 
         self.time = reader.time
         self.Nd = reader.fields['Nd']
+        #self.Nd['data'] = self.Nd['data'].filled()
         self.spread = reader.spread
         try:
             self.rain_rate = reader.fields['rain_rate']
@@ -352,7 +353,7 @@ class DropSizeDistribution(object):
         run = (0.5 * cum_W[-1] - cum_W[cross_pt]) / slope
         return self.diameter['data'][cross_pt] + run
 
-    def calculate_RR(self,cut):
+    def calculate_RR(self,cut=30):
         '''Calculate instantaneous rain rate.
 
         This calculates instantaneous rain rate based on the flux of water.
