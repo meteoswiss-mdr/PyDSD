@@ -80,9 +80,9 @@ def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
         plt.ylim(0, max_diameter)
 
     clb = plt.colorbar()
-    clb.set_label('Number of Drops')
-    plt.xlabel('Time(m)')
-    plt.ylabel('Diameter(mm)')
+    clb.set_label('Number of Drops',fontsize=16)
+    plt.xlabel('Time [UTC]',fontsize=16)
+    plt.ylabel('Diameter [mm]',fontsize=16)
     return fig, ax
 
 

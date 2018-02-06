@@ -67,10 +67,10 @@ class Parsivel2_netCDF(object):
         #ma.masked_less(self.fields['Nd']['data'], 1.0)
         #ma.set_fill_value(self.fields['Nd']['data'],np.power(10,self.fields['Nd']['data'].fill_value))
 
-        self.fields['rain_rate']  = common.ncvar_to_dict(self.nc_dataset.variables['ParsivelIntensity'])
-        self.fields['rain_rate']['data'] = ma.masked_array(self.fields['rain_rate']['data'])
-        ma.set_fill_value(self.fields['rain_rate']['data'],self.fields['rain_rate']['_FillValue'])
-        del self.fields['rain_rate']['_FillValue']
+        self.fields['RR']  = common.ncvar_to_dict(self.nc_dataset.variables['ParsivelIntensity'])
+        self.fields['RR']['data'] = ma.masked_array(self.fields['RR']['data'])
+        ma.set_fill_value(self.fields['RR']['data'],self.fields['RR']['_FillValue'])
+        del self.fields['RR']['_FillValue']
 
         self.fields['Zh']  = common.ncvar_to_dict(self.nc_dataset.variables['Reflectivity'])
         del self.fields['Zh']['_FillValue']
