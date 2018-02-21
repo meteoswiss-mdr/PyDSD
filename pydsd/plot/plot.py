@@ -2,22 +2,22 @@
 '''
 Plotting routines for different aspects of the drop size distribution class.
 '''
-
 import numpy as np
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 from pylab import cm
 from matplotlib.dates import DateFormatter
-from matplotlib.dates import SecondLocator, MinuteLocator, HourLocator, DayLocator
+from matplotlib.dates import (
+    SecondLocator, MinuteLocator, HourLocator, DayLocator)
 
 
 def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
              vmin=None, vmax=None, cmap=None, ax=None, fig=None):
     '''Plotting function for drop size distribution Nd
 
-    plot_dsd creates a pcolormesh based plot for a drop size distribution object's
-    `Nd` field.
+    plot_dsd creates a pcolormesh based plot for a drop size
+    distribution object's `Nd` field.
 
     Parameters
     ----------
@@ -45,7 +45,6 @@ def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
         cmap = mpl.colors.LinearSegmentedColormap.from_list(
             'new_map', colors, N=256)
 
-
     if vmin is None:
         vmin = np.nanmin(dsd.fields['Nd']['data'])
     if vmax is None:
@@ -57,8 +56,9 @@ def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
         norm = mpl.colors.LogNorm(vmin=vmin, vmax=vmax)
     else:
         norm = None
-        #import pdb; pdb.set_trace()
-    plt.pcolormesh(dsd.time['data'].filled(), dsd.bin_edges['data'].filled(), dsd.fields['Nd']['data'].T,
+        # import pdb; pdb.set_trace()
+    plt.pcolormesh(dsd.time['data'].filled(), dsd.bin_edges['data'].filled(),
+                   dsd.fields['Nd']['data'].T,
                    vmin=vmin, vmax=vmax,
                    figure=fig, norm=norm, cmap=cmap)
 
@@ -81,9 +81,9 @@ def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
         plt.ylim(0, max_diameter)
 
     clb = plt.colorbar()
-    clb.set_label('Number of Drops',fontsize=16)
-    plt.xlabel('Time [UTC]',fontsize=16)
-    plt.ylabel('Diameter [mm]',fontsize=16)
+    clb.set_label('Number of Drops', fontsize=16)
+    plt.xlabel('Time [UTC]', fontsize=16)
+    plt.ylabel('Diameter [mm]', fontsize=16)
     return fig, ax
 
 
@@ -110,7 +110,8 @@ def plot_NwD0(dsd, col='k', msize=20, edgecolors='none', title=None,
 
     xlab = r'D$_0$ (mm)'
     ylab = r'log$_{10}$[N$_w$] (mm$^{-1}$ m$^{-3}$)'
-    fig, ax = scatter(np.log10(dsd.fields['Nw']['data']), dsd.fields['D0']['data'], col=col, msize=msize,
+    fig, ax = scatter(np.log10(dsd.fields['Nw']['data']),
+                      dsd.fields['D0']['data'], col=col, msize=msize,
                       edgecolors=edgecolors, title=title, ax=ax, fig=fig,
                       **kwargs)
     ax.set_xlabel(xlab)
@@ -143,12 +144,12 @@ def plot_ZR(dsd, log_scale=False, col='k', msize=20, edgecolors='none',
 
     if log_scale:
         z = dsd.fields['Zh']['data']
-        rr = np.log10(dsd.fields['rain_rate']['data'])
+        rr = np.log10(dsd.fields['RR']['data'])
         xlab = r'Reflectivity (dBZ)'
         ylab = r'log$_{10}$(Rainfall Rate (mm h$^{-1}$))'
     else:
         z = 10. ** (dsd.fields['Zh']['data'] / 10.)
-        rr = dsd.fields['rain_rate']['data']
+        rr = dsd.fields['RR']['data']
         xlab = r'Reflectivity (mm$^{6}$ m$^{-3}$)'
         ylab = r'Rainfall Rate (mm h$^{-1}$)'
 
@@ -191,12 +192,12 @@ def plot_ZR_hist2d(dsd, log_scale=False, bins=(80, 60), ranges=None, norm=None,
 
     if log_scale:
         z = dsd.fields['Zh']['data']
-        rr = np.log10(dsd.fields['rain_rate']['data'])
+        rr = np.log10(dsd.fields['RR']['data'])
         xlab = r'Reflectivity (dBZ)'
         ylab = r'log$_{10}$(Rainfall Rate (mm h$^{-1}$))'
     else:
         z = np.power(10, (dsd.fields['Zh']['data'] / 10.0))
-        rr = dsd.fields['rain_rate']['data']
+        rr = dsd.fields['RR']['data']
         xlab = r'Reflectivity (mm$^{6}$ m$^{-3}$)'
         ylab = r'Rainfall Rate (mm h$^{-1}$)'
 
@@ -332,7 +333,7 @@ def plot_ts(dsd, varname, date_format='%H:%M', tz=None,
         ax.xaxis.set_minor_locator(DayLocator())
 
     if title is not None:
-        ax.set_title(title,fontweight='bold')
+        ax.set_title(title, fontweight='bold')
     return fig, ax
 
 # def plotHov(dsd, xvar, datavar, log_scale=False,
