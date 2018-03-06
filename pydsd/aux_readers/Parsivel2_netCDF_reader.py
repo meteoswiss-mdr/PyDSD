@@ -121,5 +121,5 @@ class Parsivel2_netCDF(object):
     def get_datetime_from_epoch(self, sample_times):
         """Convert time from epoch time to datetime and return a dictionary."""
         base = datetime.datetime.fromtimestamp(sample_times[0])
-        arr = np.array([base + datetime.timedelta(seconds=30*i) for i in range(2880)])
+        arr = np.array([base + datetime.timedelta(seconds=30*i) for i in range(len(sample_times))])
         return arr
