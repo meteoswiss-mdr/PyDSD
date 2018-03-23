@@ -59,6 +59,12 @@
         "units": "dBZ",
         "long_name" :"Estimated Horizontal Radar Reflectivity from Drop Size Distribution"
     },
+    "Zv":
+    {
+        "standard_name": "vertical_reflectivity",
+        "units": "dBZ",
+        "long_name" :"Estimated Vertical Radar Reflectivity from Drop Size Distribution"
+    },
     "Zdr":
     {
         "standard_name": "differential_reflectivity",
