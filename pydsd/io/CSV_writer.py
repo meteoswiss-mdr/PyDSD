@@ -33,8 +33,12 @@ def get_fieldname_pyrad(datatype):
         field_name = 'ZDR'
     elif datatype == 'cross_correlation_ratio_hv':
         field_name = 'RhoHV'
-    elif datatype == 'PhiDP':
-        field_name = 'differential_phase'
+    elif datatype == 'Ai':
+        field_name = 'Ah'
+    elif datatype == 'Adr':
+        field_name = 'Adp'
+    elif datatype == 'Kdp':
+        field_name = 'KDP'
     else:
         raise ValueError('ERROR: Unknown data type '+datatype)
 

@@ -197,6 +197,8 @@ class DropSizeDistribution(object):
             self.scatterer.psd = BinnedDSD
             self.fields['Zh']['data'][t] = 10 * \
                 np.log10(radar.refl(self.scatterer))
+            self.fields['Zv']['data'][t] = 10 * \
+                np.log10(radar.refl(self.scatterer, h_pol=False))
             self.fields['Zdr']['data'][t] = 10 * \
                 np.log10(radar.Zdr(self.scatterer))
             self.fields['cross_correlation_ratio_hv']['data'][t] = \
@@ -220,7 +222,7 @@ class DropSizeDistribution(object):
     def _setup_empty_fields(self):
         ''' Preallocate arrays of zeros for the radar moments
         '''
-        params_list = ['Zh', 'Zdr', 'Kdp', 'Ai',
+        params_list = ['Zh', 'Zv', 'Zdr', 'Kdp', 'Ai',
                        'Adr', 'cross_correlation_ratio_hv','LDR',
                        'specific_differential_phase_hv']
 
