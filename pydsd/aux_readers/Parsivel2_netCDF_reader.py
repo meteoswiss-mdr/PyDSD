@@ -56,13 +56,13 @@ class Parsivel2_netCDF(object):
         self.time = common.ncvar_to_dict(self.nc_dataset.variables['Time'])
         self.time['data'] = ma.array(self.get_datetime_from_epoch(self.time['data'][:]))
         self.time['units'] = "Datetime objects"
-        del self.time['_FillValue']
+        #del self.time['_FillValue']
 
         self.fields['Nd'] = common.ncvar_to_dict(self.nc_dataset.variables['VolumetricDrops'])
         self.fields['Nd']['data'] = ma.transpose(np.power(10, self.fields['Nd']['data']))
         ma.set_fill_value(self.fields['Nd']['data'], 0.)
         self.fields['Nd']['data'] = self.fields['Nd']['data'].filled()
-        del self.fields['Nd']['_FillValue']
+        # del self.fields['Nd']['_FillValue']
         self.fields['Nd']['units'] = "1/m^3 1/mm"
         # ma.masked_less(self.fields['Nd']['data'], 1.0)
         # ma.set_fill_value(self.fields['Nd']['data'], np.power(10, self.fields['Nd']['data'].fill_value))
@@ -70,20 +70,20 @@ class Parsivel2_netCDF(object):
         self.fields['RR'] = common.ncvar_to_dict(self.nc_dataset.variables['ParsivelIntensity'])
         self.fields['RR']['data'] = ma.masked_array(self.fields['RR']['data'])
         ma.set_fill_value(self.fields['RR']['data'], self.fields['RR']['_FillValue'])
-        del self.fields['RR']['_FillValue']
+        # del self.fields['RR']['_FillValue']
 
         self.fields['Zh'] = common.ncvar_to_dict(self.nc_dataset.variables['Reflectivity'])
-        del self.fields['Zh']['_FillValue']
+        # del self.fields['Zh']['_FillValue']
 
         self.fields['num_particles'] = common.ncvar_to_dict(self.nc_dataset.variables['RawDrops'])
         self.fields['num_particles']['data'] = ma.masked_array(self.fields['num_particles']['data'])
         ma.set_fill_value(self.fields['num_particles']['data'], self.fields['num_particles']['_FillValue'])
-        del self.fields['num_particles']['_FillValue']
+        # del self.fields['num_particles']['_FillValue']
 
         self.fields['terminal_velocity'] = common.ncvar_to_dict(self.nc_dataset.variables['VelocityDrops'])
         self.fields['terminal_velocity']['data'] = ma.transpose(ma.masked_array(self.fields['terminal_velocity']['data']))
         ma.set_fill_value(self.fields['terminal_velocity']['data'], self.fields['terminal_velocity']['_FillValue'])
-        del self.fields['terminal_velocity']['_FillValue']
+        # del self.fields['terminal_velocity']['_FillValue']
 
         self.fields['Precip_Code'] = common.ncvar_to_dict(self.nc_dataset.variables['PrecipCode'])
 

@@ -85,7 +85,6 @@ class DropSizeDistribution(object):
 
         self.time = reader.time
         self.Nd = reader.fields['Nd']
-        # self.Nd['data'] = self.Nd['data'].filled()
         self.spread = reader.spread
         try:
             self.rain_rate = reader.fields['RR']
@@ -202,6 +201,10 @@ class DropSizeDistribution(object):
                 np.log10(radar.Zdr(self.scatterer))
             self.fields['cross_correlation_ratio_hv']['data'][t] = \
                 radar.rho_hv(self.scatterer)
+            self.fields['specific_differential_phase_hv']['data'][t] = \
+                radar.delta_hv(self.scatterer)
+            self.fields['LDR']['data'][t] = 10 * \
+                np.log10(radar.ldr(self.scatterer))
 
         self.scatterer.set_geometry(tmatrix_aux.geom_horiz_forw)
 
@@ -218,7 +221,8 @@ class DropSizeDistribution(object):
         ''' Preallocate arrays of zeros for the radar moments
         '''
         params_list = ['Zh', 'Zdr', 'Kdp', 'Ai',
-                       'Adr', 'cross_correlation_ratio_hv']
+                       'Adr', 'cross_correlation_ratio_hv','LDR',
+                       'specific_differential_phase_hv']
 
         for param in params_list:
             self.fields[param] = \
