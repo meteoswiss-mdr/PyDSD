@@ -82,7 +82,6 @@ class DropSizeDistribution(object):
         '''
 
         self.config = configuration.Configuration()
-
         self.time = reader.time
         self.Nd = reader.fields['Nd']
         self.spread = reader.spread

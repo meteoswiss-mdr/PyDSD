@@ -74,7 +74,7 @@
     "Kdp":
     {
         "standard_name": "specific_differential_phase",
-        "units": "deg",
+        "units": "degrees per km",
         "long_name" :"Specific Differential Phase from Drop Size Distribution"
     },
     "Ai":

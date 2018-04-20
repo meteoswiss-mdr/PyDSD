@@ -12,7 +12,8 @@ from matplotlib.dates import (
     SecondLocator, MinuteLocator, HourLocator, DayLocator)
 
 
-def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
+def plot_dsd(dsd, xlims=None, ylims=None, date_format='%H:%M', tz=None,
+             x_min_tick_format='minute', log_scale=True, tighten=True,
              vmin=None, vmax=None, cmap=None, ax=None, fig=None):
     '''Plotting function for drop size distribution Nd
 
@@ -39,6 +40,8 @@ def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
     '''
     ax = parse_ax(ax)
     fig = parse_fig(fig)
+    
+    x_fmt = DateFormatter(date_format)
 
     if cmap is None:
         colors = [('white')] + [(cm.jet(i)) for i in range(1, 256)]
@@ -73,6 +76,16 @@ def plot_dsd(dsd, xlims=None, ylims=None, log_scale=True, tighten=True,
         ax.set_ylim(ylims)
     else:
         ax.set_ylim(0., dsd.diameter['data'][-1])
+        
+    ax.xaxis.set_major_formatter(x_fmt)
+    if x_min_tick_format == 'second':
+        ax.xaxis.set_minor_locator(SecondLocator())
+    elif x_min_tick_format == 'minute':
+        ax.xaxis.set_minor_locator(MinuteLocator())
+    elif x_min_tick_format == 'hour':
+        ax.xaxis.set_minor_locator(HourLocator())
+    elif x_min_tick_format == 'day':
+        ax.xaxis.set_minor_locator(DayLocator())
 
     if tighten:
         max_diameter = dsd.diameter['data'][

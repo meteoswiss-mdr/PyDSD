@@ -2,7 +2,7 @@ from .io.ParsivelReader import read_parsivel
 from .io.ParsivelNasaGVReader import read_parsivel_nasa_gv
 from .io.JWDReader import read_jwd
 from .io.Image2DReader import read_ucsc_netcdf, read_noaa_aoml_netcdf
-from .io import CSV_writer
+from .io import csv_writer
 
 from .aux_readers.GPMApuWallopsRawReader import read_gpm_nasa_apu_raw_wallops
 from .aux_readers.NASA_2DVD_reader import read_2dvd_sav_nasa_gv
