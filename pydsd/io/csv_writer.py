@@ -35,6 +35,10 @@ def get_fieldname_pyrad(datatype):
     """
     if datatype == 'Nd':
         field_name = 'Nd'
+    elif datatype == 'RR':
+        field_name = 'RR'
+    elif datatype == 'W':
+        field_name = 'LWC'
     elif datatype == 'Zh':
         field_name = 'dBZ'
     elif datatype == 'Zv':
@@ -43,12 +47,18 @@ def get_fieldname_pyrad(datatype):
         field_name = 'ZDR'
     elif datatype == 'cross_correlation_ratio_hv':
         field_name = 'RhoHV'
+    elif datatype == 'specific_differential_phase_hv':
+        field_name = 'DeltaCo'
     elif datatype == 'Ai':
         field_name = 'Ah'
+    elif datatype == 'Aiv':
+        field_name = 'Av'
     elif datatype == 'Adr':
         field_name = 'Adp'
     elif datatype == 'Kdp':
         field_name = 'KDP'
+    elif datatype == 'LDR':
+        field_name = 'LDR'
     else:
         raise ValueError('ERROR: Unknown data type '+datatype)
 
@@ -74,7 +84,6 @@ def write_csv_file(dsd, date, var):
     basepath = '/data/disdrometer/mals_parsivel/amfortas/scattering/'
     datapath = date[0:4]+'/'+date[0:6]+'/'
     pathlib.Path(basepath+datapath).mkdir(parents=True, exist_ok=True)
-    dsd.calculate_radar_parameters()
     filelist = glob.glob(fname)
     if not filelist:
         with open(basepath+datapath+fname, 'w', newline='') as csvfile:
@@ -83,10 +92,9 @@ def write_csv_file(dsd, date, var):
             csvfile.write('# Description: \n')
             csvfile.write('# Time series of '+get_fieldname_pyrad(var)+'\n')
             csvfile.write(
-                '# Location [lon, lat, alt]: ' +
-                dsd.info['Longitude_value'] + '  ' +
+                '# Location [lat  lon]: ' +
                 dsd.info['Latitude_value'] + '  ' +
-                dsd.info['Altitude_value'] + '\n')
+                dsd.info['Longitude_value'] + '\n')
             csvfile.write(
                 '# Elevation: ' +
                 str(dsd.info['Altitude_value'])+'m\n')
@@ -94,34 +102,32 @@ def write_csv_file(dsd, date, var):
                 '# Scattering Frequency: ' +
                 str(dsd.scattering_freq*10**-9)[0:3]+'MHz\n')
             csvfile.write('# Data: ' + get_fieldname_pyrad(var) + '\n')
-            # csvfile.write('# Fill Value: ' +
-            #              str(dsd.fields[var]['_FillValue']) + '\n')
             csvfile.write(
                 '# Start: ' +
                 dsd.time['data'].filled()[0].strftime(
                     '%Y-%m-%d %H:%M:%S UTC') + '\n')
             csvfile.write('#\n')
 
-            fieldnames = ['date', 'Precip_Code', get_fieldname_pyrad(var),
-                          'Scattering_Temp. [°C]']
+            fieldnames = ['date', 'Precip Code', get_fieldname_pyrad(var),
+                          'Scattering Temp [deg C]']
             writer = csv.DictWriter(csvfile, fieldnames)
             writer.writeheader()
             for i in range(len(dsd.time['data'])):
                 writer.writerow(
                     {'date': dsd.time['data'][i],
-                     'Precip_Code': dsd.fields['Precip_Code']['data'][i],
+                     'Precip Code': dsd.fields['Precip_Code']['data'][i],
                      get_fieldname_pyrad(var): dsd.fields[var]['data'][i],
-                     'Scattering_Temp. [°C]': dsd.scattering_temp})
+                     'Scattering Temp [deg C]': dsd.scattering_temp})
             csvfile.close()
     else:
         with open(basepath+datapath+fname, 'a', newline='') as csvfile:
-            fieldnames = ['date', 'Precip_Code', get_fieldname_pyrad(var),
-                          'Scattering_Temp. [°C]']
+            fieldnames = ['date', 'Precip Code', get_fieldname_pyrad(var),
+                          'Scattering Temp [deg C]']
             writer = csv.DictWriter(csvfile, fieldnames)
             for i in range(len(dsd.time['data'])):
                 writer.writerow(
                     {'date': dsd.time['data'][i],
-                     'Precip_Code': dsd.fields['Precip_Code']['data'][i],
+                     'Precip Code': dsd.fields['Precip_Code']['data'][i],
                      get_fieldname_pyrad(var): dsd.fields[var]['data'][i],
-                     'Scattering_Temp. [°C]': dsd.scattering_temp})
+                     'Scattering Temp [deg C]': dsd.scattering_temp})
             csvfile.close()

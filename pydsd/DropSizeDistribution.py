@@ -10,6 +10,7 @@ import numpy as np
 import pytmatrix
 import scipy
 from scipy.optimize import curve_fit
+import warnings
 
 from pytmatrix.tmatrix import Scatterer
 from pytmatrix.psd import PSDIntegrator
@@ -21,6 +22,8 @@ from . import DSR
 from .utility import dielectric
 from .utility import configuration
 SPEED_OF_LIGHT = 299792458
+
+warnings.filterwarnings("ignore")
 
 
 class DropSizeDistribution(object):
@@ -215,13 +218,14 @@ class DropSizeDistribution(object):
             self.scatterer.psd = BinnedDSD
             self.fields['Kdp']['data'][t] = radar.Kdp(self.scatterer)
             self.fields['Ai']['data'][t] = radar.Ai(self.scatterer)
+            self.fields['Aiv']['data'][t] = radar.Ai(self.scatterer, h_pol=False)
             self.fields['Adr']['data'][t] = radar.Ai(self.scatterer) - \
                 radar.Ai(self.scatterer, h_pol=False)
 
     def _setup_empty_fields(self):
         ''' Preallocate arrays of zeros for the radar moments
         '''
-        params_list = ['Zh', 'Zv', 'Zdr', 'Kdp', 'Ai',
+        params_list = ['Zh', 'Zv', 'Zdr', 'Kdp', 'Ai', 'Aiv',
                        'Adr', 'cross_correlation_ratio_hv','LDR',
                        'specific_differential_phase_hv']
 

@@ -83,6 +83,12 @@
         "units": "dB/km",
         "long_name": "Specific Attenuation"
     },
+    "Aiv":
+    {
+        "standard_name": "specific_vertical_attenuation",
+        "units": "dB/km",
+        "long_name": "Specific Vertical Attenuation"
+    },
     "Adr":
     {
         "standard_name": "specific_differential_attenuation",
@@ -128,7 +134,7 @@
     {
         "standard_name":"specific_differential_phase_hv",
         "long_name":"Specific Differential Phase",
-        "units":"degrees per km"
+        "units":"degrees"
     },
     "cross_correlation_ratio_hv":{
         "standard_name":"cross_correlation_ratio_hv",
