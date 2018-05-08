@@ -322,6 +322,12 @@ class DropSizeDistribution(object):
         '''
 
         params_list = ['D0', 'Dmax', 'Dm', 'Nt', 'Nw', 'N0', 'W', 'mu']
+        
+        l = np.empty(len(self.fields['Precip_Code']['data']),dtype=bool)
+        j = 0
+        for i in self.fields['Precip_Code']['data']:
+            l[j] = 'N' in i or 'G' in i
+            j += 1
 
         for param in params_list:
             self.fields[param] = \
@@ -351,6 +357,10 @@ class DropSizeDistribution(object):
 
         self.fields['mu']['data'][:] = list(map(self._estimate_mu,
                                                 list(range(0, self.numt))))
+
+        for param in params_list:
+            self.fields[param]['data'] = \
+                np.ma.masked_where(l, self.fields[param]['data'])
 
     def __get_last_nonzero(self, N):
         ''' Gets last nonzero entry in an array. Gets last non-zero entry in an array.
