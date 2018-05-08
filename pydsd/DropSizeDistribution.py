@@ -190,7 +190,8 @@ class DropSizeDistribution(object):
 
         # We break up scattering to avoid regenerating table.
         self.scatterer.set_geometry(tmatrix_aux.geom_horiz_back)
-
+        
+        print('Calculating backward scattering parameters ...')
         for t in range(self.scatter_start_time, self.scatter_end_time):
             if np.sum(self.Nd['data'][t]) is 0:
                 continue
@@ -211,24 +212,36 @@ class DropSizeDistribution(object):
                 np.log10(radar.ldr(self.scatterer))
 
         self.scatterer.set_geometry(tmatrix_aux.geom_horiz_forw)
-
+        
+        print('Calculating forward scattering parameters ...')
         for t in range(self.scatter_start_time, self.scatter_end_time):
             BinnedDSD = pytmatrix.psd.BinnedPSD(self.bin_edges['data'],
                                                 self.Nd['data'][t])
             self.scatterer.psd = BinnedDSD
             self.fields['Kdp']['data'][t] = radar.Kdp(self.scatterer)
             self.fields['Ai']['data'][t] = radar.Ai(self.scatterer)
-            self.fields['Aiv']['data'][t] = radar.Ai(self.scatterer, h_pol=False)
+            self.fields['Av']['data'][t] = radar.Ai(self.scatterer, h_pol=False)
             self.fields['Adr']['data'][t] = radar.Ai(self.scatterer) - \
                 radar.Ai(self.scatterer, h_pol=False)
+
+        params_list = ['Zh', 'Zv', 'Zdr', 'Kdp', 'Ai', 'Av',
+                       'Adr', 'cross_correlation_ratio_hv', 'LDR',
+                       'specific_differential_phase_hv']
+        l = np.empty(len(self.fields['Precip_Code']['data']),dtype=bool)
+        j = 0
+        for i in self.fields['Precip_Code']['data']:
+            l[j] = 'N' in i or 'G' in i
+            j += 1       
+        for param in params_list:
+            self.fields[param]['data'] = \
+                np.ma.masked_where(l, self.fields[param]['data'])
 
     def _setup_empty_fields(self):
         ''' Preallocate arrays of zeros for the radar moments
         '''
-        params_list = ['Zh', 'Zv', 'Zdr', 'Kdp', 'Ai', 'Aiv',
-                       'Adr', 'cross_correlation_ratio_hv','LDR',
+        params_list = ['Zh', 'Zv', 'Zdr', 'Kdp', 'Ai', 'Av',
+                       'Adr', 'cross_correlation_ratio_hv', 'LDR',
                        'specific_differential_phase_hv']
-
         for param in params_list:
             self.fields[param] = \
                 self.config.fill_in_metadata(param, np.ma.zeros(self.numt))

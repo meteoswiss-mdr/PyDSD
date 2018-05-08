@@ -83,7 +83,7 @@
         "units": "dB/km",
         "long_name": "Specific Attenuation"
     },
-    "Aiv":
+    "Av":
     {
         "standard_name": "specific_vertical_attenuation",
         "units": "dB/km",

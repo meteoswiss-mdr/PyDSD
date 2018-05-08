@@ -51,7 +51,7 @@ def get_fieldname_pyrad(datatype):
         field_name = 'DeltaCo'
     elif datatype == 'Ai':
         field_name = 'Ah'
-    elif datatype == 'Aiv':
+    elif datatype == 'Av':
         field_name = 'Av'
     elif datatype == 'Adr':
         field_name = 'Adp'
