@@ -224,6 +224,7 @@ class DropSizeDistribution(object):
             self.fields['Adr']['data'][t] = radar.Ai(self.scatterer) - \
                 radar.Ai(self.scatterer, h_pol=False)
 
+        # Mask all values where no precipitation present or when ice present
         params_list = ['Zh', 'Zv', 'Zdr', 'Kdp', 'Ai', 'Av',
                        'Adr', 'cross_correlation_ratio_hv', 'LDR',
                        'specific_differential_phase_hv']
@@ -322,12 +323,6 @@ class DropSizeDistribution(object):
         '''
 
         params_list = ['D0', 'Dmax', 'Dm', 'Nt', 'Nw', 'N0', 'W', 'mu']
-        
-        l = np.empty(len(self.fields['Precip_Code']['data']),dtype=bool)
-        j = 0
-        for i in self.fields['Precip_Code']['data']:
-            l[j] = 'N' in i or 'G' in i
-            j += 1
 
         for param in params_list:
             self.fields[param] = \
@@ -358,6 +353,12 @@ class DropSizeDistribution(object):
         self.fields['mu']['data'][:] = list(map(self._estimate_mu,
                                                 list(range(0, self.numt))))
 
+        # Mask all values where no precipitation present or when ice present
+        l = np.empty(len(self.fields['Precip_Code']['data']),dtype=bool)
+        j = 0
+        for i in self.fields['Precip_Code']['data']:
+            l[j] = 'N' in i or 'G' in i
+            j += 1
         for param in params_list:
             self.fields[param]['data'] = \
                 np.ma.masked_where(l, self.fields[param]['data'])
