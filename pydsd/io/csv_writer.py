@@ -65,7 +65,7 @@ def get_fieldname_pyrad(datatype):
     return field_name
 
 
-def write_csv_file(dsd, date, var, fillvalue=-9999):
+def write_csv_file(dsd, date, var, fillvalue=float(-9999)):
     """
     writes time series of data
 
@@ -86,6 +86,7 @@ def write_csv_file(dsd, date, var, fillvalue=-9999):
     pathlib.Path(basepath+datapath).mkdir(parents=True, exist_ok=True)
     filelist = glob.glob(fname)
     np.ma.set_fill_value(dsd.fields[var]['data'], fillvalue)
+    data = dsd.fields[var]['data'].filled()
     if not filelist:
         with open(basepath+datapath+fname, 'w', newline='') as csvfile:
             csvfile.write('# Disdrometer timeseries data file\n')
@@ -117,7 +118,7 @@ def write_csv_file(dsd, date, var, fillvalue=-9999):
                 writer.writerow(
                     {'date': dsd.time['data'][i],
                      'Precip Code': dsd.fields['Precip_Code']['data'][i],
-                     get_fieldname_pyrad(var): dsd.fields[var]['data'][i].filled,
+                     get_fieldname_pyrad(var): data[i],
                      'Scattering Temp [deg C]': dsd.scattering_temp})
             csvfile.close()
     else:
@@ -129,6 +130,6 @@ def write_csv_file(dsd, date, var, fillvalue=-9999):
                 writer.writerow(
                     {'date': dsd.time['data'][i],
                      'Precip Code': dsd.fields['Precip_Code']['data'][i],
-                     get_fieldname_pyrad(var): dsd.fields[var]['data'][i].filled,
+                     get_fieldname_pyrad(var): data[i],
                      'Scattering Temp [deg C]': dsd.scattering_temp})
             csvfile.close()
