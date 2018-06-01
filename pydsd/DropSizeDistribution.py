@@ -128,7 +128,7 @@ class DropSizeDistribution(object):
 
         self.set_scattering_temperature_and_frequency()
 
-    def set_scattering_temperature_and_frequency(self, scattering_temp=10,
+    def set_scattering_temperature_and_frequency(self, scattering_temp=10.,
                                                  scattering_freq=9.7e9):
         ''' Change the scattering temperature. After use, re-run
         calculate_radar_parameters to see the effect this has on

@@ -79,8 +79,8 @@ def write_csv_file(dsd, date, var, fillvalue=float(-9999)):
 
     """
     fname = (date+'_'+dsd.info['StationName']+'_' +
-             str(dsd.scattering_freq*10**-9)[0:3]+'_' +
-             get_fieldname_pyrad(var)+'_el090.0.csv')
+             str(dsd.scattering_freq*10**-9)[0:3]+'GHz_' +
+             get_fieldname_pyrad(var)+'_el90.0.csv')
     basepath = '/data/disdrometer/mals_parsivel/amfortas/scattering/'
     datapath = date[0:4]+'/'+date[0:6]+'/'
     pathlib.Path(basepath+datapath).mkdir(parents=True, exist_ok=True)
@@ -99,10 +99,13 @@ def write_csv_file(dsd, date, var, fillvalue=float(-9999)):
                 dsd.info['Longitude_value'] + '\n')
             csvfile.write(
                 '# Elevation: ' +
-                str(dsd.info['Altitude_value'])+'m\n')
+                str(dsd.info['Altitude_value'])+'m MSL\n')
+            csvfile.write(
+                '# Elevation angle: ' +
+                '90\n')
             csvfile.write(
                 '# Scattering Frequency: ' +
-                str(dsd.scattering_freq*10**-9)[0:3]+'MHz\n')
+                str(dsd.scattering_freq*10**-9)[0:3]+' GHz\n')
             csvfile.write('# Data: ' + get_fieldname_pyrad(var) + '\n')
             csvfile.write(
                 '# Start: ' +
