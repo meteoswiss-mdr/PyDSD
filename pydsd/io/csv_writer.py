@@ -65,7 +65,9 @@ def get_fieldname_pyrad(datatype):
     return field_name
 
 
-def write_csv_file(dsd, date, var, fillvalue=float(-9999)):
+def write_csv_file(dsd, date, var,
+                   path='/data/disdrometer/mals_parsivel/amfortas/scattering/',
+                   fillvalue=float(-9999)):
     """
     writes time series of data
 
@@ -81,7 +83,7 @@ def write_csv_file(dsd, date, var, fillvalue=float(-9999)):
     fname = (date+'_'+dsd.info['StationName']+'_' +
              str(dsd.scattering_freq*10**-9)[0:3]+'GHz_' +
              get_fieldname_pyrad(var)+'_el90.0.csv')
-    basepath = '/data/disdrometer/mals_parsivel/amfortas/scattering/'
+    basepath = path
     datapath = date[0:4]+'/'+date[0:6]+'/'
     pathlib.Path(basepath+datapath).mkdir(parents=True, exist_ok=True)
     filelist = glob.glob(fname)
