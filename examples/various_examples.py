@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# Author: Eric Sulmon
+# Creation: 15.11.2017
+# Revision: 31.08.2018
+
 from datetime import datetime
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
@@ -24,12 +29,17 @@ dsd.calculate_radar_parameters()
 dsd.calculate_dsd_parameterization()
 ######################################################################
 ############################# DSD plot ###############################
+
+# Drop Size Distribution timeseries
+# The colour shows the number of drops in each size bin (y-axis) over
+# time (x-axis)
 start = datetime.strptime(date, '%Y%m%d')
 end = datetime.strptime(date+'235959', '%Y%m%d%H%M%S')
 
 plt.figure(1)
 fig, ax = plt.subplots(figsize=(15, 6), dpi=80)
 ticks = ax.set_yticks(dsd.bin_edges['data'], minor=False)
+# Calling the PyDSD plotting function
 nd = pyd.plot.plot_dsd(dsd, tighten=False, vmin=1, ylims=(0, 5.5),
                        xlims=(start, end), date_format='%H:%M:%S',
                        x_min_tick_format='hour')
@@ -41,8 +51,17 @@ ttl.set_position([.5, 1.05])
 ######################################################################
 ######################## General timeseries ##########################
 
+# Variable timeseries
+# The variable value (y-axis) over time (y-axis)
 plt.figure(2)
 fig, ax = plt.subplots(figsize=(10, 4), dpi=80)
+# Calling the PyDSD plotting function with the variable Zdr 
+# (differential reflectivity) in this case. Any of these variable can
+# be chosen: Zh, Zv, Zdr, Kdp, Ai, Av(hor. and vert. Attenuation),
+#            Adr (diff. attenuation), cross_correlation_ratio_hv (rhohv),
+#            LDR, Kdp, D0, Dmax, Dm, Nt, Nw, N0, W, mu
+# Also for the following timeseries plotting functions, any of the afore-
+# mentioned variable can be selected.
 ts1 = pyd.plot.plot_ts(dsd, 'Zdr', date_format='%H:%M:%S',
                        x_min_tick_format='hour',
                        title='24h ZDR timeseries '+date[:4]+'-'+
@@ -56,11 +75,14 @@ ttl = ax.title
 ttl.set_position([.5, 1.05])
 
 ######################################################################
-##################### Compare scatterplot ############################
+######################### Compare scatterplot ########################
 
+# Compare two selected variables in a scatterplot
 plt.figure(3)
 fig, ax = plt.subplots(figsize=(7, 7), dpi=80)
 #plt.xscale('log')
+# Calling PyDSD plotting function with the two variables Zh and Zdr
+# in this case. 
 pyd.plot.scatter(dsd.fields['Zh']['data'], dsd.fields['Zdr']['data'],
                  col='k', msize=20, edgecolors='none',
                  title='24h Zh-ZDR '+date[:4]+'-'+date[4:6]+'-'+
@@ -76,21 +98,25 @@ ttl.set_position([.5, 1.05])
 ######################################################################
 #################### Compare DSD with median D #######################
 
+# DSD plot combined with timeseries plot
 plt.figure(4)
 fig, ax = plt.subplots(figsize=(20, 8), dpi=80)
 ticks = ax.set_yticks(dsd.bin_edges['data'], minor=False)
+# Calling dsd plotting function
 pyd.plot.plot_dsd(dsd, tighten=False, vmin=1, ylims=(0, 6),
                   xlims=(start, end))
 ttl = plt.title('24h DSD-timeseries '+date[:4]+'-'+date[4:6]+'-'+
                 date[6:8], fontsize=14, fontweight='bold')
 ax.yaxis.grid(True, which='major')
 ttl.set_position([.5, 1.05])
+# Calling timeseries plotting function
 ts1 = pyd.plot.plot_ts(dsd, 'D0', date_format='%H:%M:%S',
                        x_min_tick_format='hour', fmt="black")
 
 ######################################################################
 ######################  RR with Precip code  #########################
 
+# RR timeseries plot colour coded with Precip type
 tsdata = dsd.fields['RR']['data']
 p = np.full(dsd.numt, True, dtype=bool)
 l = dsd.fields['Precip_Code']['data']
@@ -104,8 +130,8 @@ c = ['r' if a else 'b' for a in p]
 lines = [((x0, y0), (x1, y1)) for x0, y0, x1, y1
          in zip(tt[:-1], tsdata[:-1], tt[1:], tsdata[1:])]
 colored_lines = LineCollection(lines, colors=c, linewidths=(2, ))
-# plot data
 
+# plot data
 plt.figure(5)
 fig, ax = plt.subplots(figsize=(20, 8), dpi=80)
 coll = ax.add_collection(colored_lines)
@@ -129,4 +155,5 @@ plt.show()
 ######################################################################
 #####################    Write csv-files    ##########################
 
+# Write a csv-file for the variable Zh in this case.
 pyd.io.csv_writer.write_csv_file(dsd, date, 'Zh', '../testdata/')

@@ -3,7 +3,7 @@ Parsivel2_netCDF_reader.py
 ==========================
 
 netCDF reader for OTT Parsivel^2 data
-
+Author: Eric Sulmoni
 '''
 
 import datetime

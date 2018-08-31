@@ -4,7 +4,7 @@ csv_writer.py
 
 This script writes a CSV file containing
 the time series of a variable for one day.
-
+Author: Eric Sulmoni
 """
 
 from __future__ import print_function

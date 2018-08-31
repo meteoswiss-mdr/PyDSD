@@ -4,6 +4,7 @@ The Drop Size Distribution model contains the DropSizeDistribution class.
 This class represents drop size distributions returned from the various
 readers in the io module. The class knows how to perform scattering
 simulations on itself.
+Modifications made by Eric Sulmoni
 '''
 
 import numpy as np
@@ -154,7 +155,9 @@ class DropSizeDistribution(object):
         Defaults to X-Band,Beard and Chuang 10C setup.
 
         Sets the dictionary parameters in fields dictionary:
-            Zh, Zdr, Kdp, Ai(Attenuation)
+            Zh, Zv, Zdr, Kdp, Ai, Av(hor. and vert. Attenuation),
+            Adr (diff. attenuation), cross_correlation_ratio_hv (rhohv),
+            LDR, Kdp
 
         Parameters:
         ----------
